@@ -83,7 +83,7 @@
               line-height: 2.2em;
               padding-left: 20px;
               border-top: 2px solid #F0F0F0;
-              > a {
+              > div {
                   position: absolute;
                   top: 3px;
                   right: 40px;
@@ -96,3 +96,20 @@
     }
 }
 
+.detail-dialog {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: rgba(230, 230, 230, 0.60);
+    &.on {
+        display: block;
+    }
+    > iframe {
+        width: 90%;
+        height: 520px;
+        border: none;
+    }
+}

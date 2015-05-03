@@ -5,9 +5,11 @@
     <meta http-equiv="content-language" content="ja">
     <title>Strix | statistics</title>
     <link rel="stylesheet" href="../build/css/statistics.min.css" />
-    <script type="text/javascript" src="../js/d3.min.js"></script>
+    <script type="text/javascript" src="../js/lib/request.js"></script>
+    <script type="text/javascript" src="../js/vendor/vue.min.js"></script>
+    <script type="text/javascript" src="../js/vendor/d3.min.js"></script>
 </head>
-<body>
+<body id="statistics">
     <header class="common-page">
         <div class="page-logo">S</div>
         <div class="page-title">Strix</div>
@@ -24,35 +26,35 @@
         <div class="analytics">
             <dl>
                 <dt>サイト名</dt>
-                <dd>Yahoo!</dd>
+                <dd>{{ info.site_name }}</dd>
             </dl>
             <dl>
                 <dt>URL</dt>
-                <dd>http://yahoo.co.jp</dd>
+                <dd>{{ info.url }}</dd>
             </dl>
             <dl>
                 <dt>計測期間</dt>
-                <dd>2015-02-02 ~ 2015-04-05</dd>
+                <dd>{{ info.start_date }} ~ {{ info.end_date }}</dd>
             </dl>
         </div>
 
         <div class="profile">
             <div class="text">
-                日本最大級のポータルサイト。検索、オークション、ニュース、天気、スポーツ、メール、ショッピングなど多数のサービスを展開。あなたの生活をより豊かにする「課題解決エンジン」を目指していきます。
+                {{ profile.description }}
             </div>
             <div class="image">
-                <img src="http://i.gzn.jp/img/2007/10/30/yahoo_japan_newtop/yahoo_japan_newtop0.png">
+                <img v-attr="src: profile.screenshot">
             </div>
         </div>
 
         <h2 class="contents-title">GRAPH</h2>
         <div class="graph">
             <div class="select">
-                <div>TODAY</div>
-                <div>YESTERDAY</div>
-                <div>WEEK</div>
-                <div>MONTH</div>
-                <div>YEAR</div>
+                <div v-on="click: graphButton('TODAY', $event)">TODAY</div>
+                <div v-on="click: graphButton('YESTERDAY', $event)">YESTERDAY</div>
+                <div v-on="click: graphButton('WEEK', $event)">WEEK</div>
+                <div v-on="click: graphButton('MONTH', $event)">MONTH</div>
+                <div v-on="click: graphButton('YEAR', $event)">YEAR</div>
             </div>
             <div class="draw_area"></div>
         </div>
@@ -60,137 +62,24 @@
         <h2 class="contents-title">HISTORY</h2>
         <div class="history">
             <ul>
-                <li>
-                    2014-02-02 12:11:11
-                    <a class="small-button" href="../statistics.html?site_id=1">Detail</a>
-                </li>
-                <li>
-                    2014-02-02 12:11:11
-                    <a class="small-button" href="../statistics.html?site_id=2">Detail</a>
+                <li v-repeat="historys">
+                    {{ date }}
+                    <div class="small-button" v-on="click: detailButton(id, $event)">Detail</div>
                 </li>
             </ul>
         </div>
     </article>
 
+    <div id="detail-dialog" class="detail-dialog" v-on="click: dialogClick($event)">
+        <iframe sandbox="allow-same-origin allow-scripts" v-attr="src: har_url"></iframe>
+    </div>
 
-<script type="text/javascript">
-var targetElm = document.querySelector(".draw_area");
-var width = 920;
-var height = 400;
-var dataset = [];
-dataset.push({'rank':  0, 'participant': 200 });
-dataset.push({'rank':  1, 'participant': 100 });
-dataset.push({'rank':  2, 'participant':  10 });
-dataset.push({'rank':  3, 'participant':  20 });
-dataset.push({'rank':  4, 'participant':  30 });
-dataset.push({'rank':  5, 'participant':  40 });
-dataset.push({'rank':  6, 'participant':  40 });
-dataset.push({'rank':  7, 'participant':  40 });
-dataset.push({'rank':  8, 'participant':  40 });
-dataset.push({'rank':  9, 'participant':  40 });
-dataset.push({'rank': 10, 'participant':  40 });
-dataset.push({'rank': 11, 'participant':  40 });
-dataset.push({'rank': 12, 'participant':  40 });
-dataset.push({'rank': 13, 'participant':  40 });
-dataset.push({'rank': 14, 'participant':  40 });
-dataset.push({'rank': 15, 'participant':  40 });
-dataset.push({'rank': 16, 'participant':  40 });
-dataset.push({'rank': 17, 'participant':  40 });
-dataset.push({'rank': 18, 'participant': 140 });
-dataset.push({'rank': 19, 'participant':  40 });
-dataset.push({'rank': 20, 'participant':  40 });
-dataset.push({'rank': 21, 'participant':  40 });
-dataset.push({'rank': 22, 'participant':  40 });
-dataset.push({'rank': 23, 'participant':  10 });
-drawGraph(targetElm, width, height, dataset);
+    <div id="loading" class="loading">
+        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+            <circle class="spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
+    </div>
 
-
-
-
-// グラフ描画処理
-function drawGraph(targetElm, width, height, dataset) {
-    var maxDataHeight = 0;// 人数の一番多いとこのバーの高さ
-    dataset.forEach(function(data) {
-      maxDataHeight = maxDataHeight > data.participant ? maxDataHeight : data.participant;
-    })
-
-    var margin = {top: 20, right: 54, bottom: 30, left: 64};
-    width = width - margin.left - margin.right;
-    height = height- margin.top - margin.bottom;
-    
-    var x = d3.scale
-              .ordinal()
-              .rangeRoundBands([0, width], .1);
-     
-    var y = d3.scale
-              .linear()
-              .range([height, 0]);
-     
-    var xAxis = d3.svg.axis()
-                  .scale(x)
-                  .orient("bottom");
-     
-    var yAxis = d3.svg.axis()
-                  .scale(y)
-                  .ticks(5)
-                  .orient("left");
-    
-    var svg = d3.select(targetElm)
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
-    
-    dataset.forEach(function(d) {
-       d.participant = +d.participant;
-    });
-    // x軸の値を設定
-    x.domain(dataset.map(function(d) {
-        return d.rank;
-    }));
-    // y軸の値を設定
-    y.domain([0, d3.max(dataset, function(d) {
-        return d.participant;
-    })]);
-    // x軸を追加
-    svg.append("g")
-       .attr("class", "x axis")
-       .attr("transform", "translate(0," + height + ")")
-       .call(xAxis);
-    // y軸を追加
-    svg.append("g")
-       .attr("class", "y axis")
-       .call(yAxis)
-       .append("text")
-       .attr("y", -15)
-       .attr("dy", ".71em")
-       .style("text-anchor", "end")
-       .text("onload time");
-    // バーを追加
-    svg.selectAll(".bar")
-       .data(dataset)
-       .enter()
-       .append("rect")
-       .attr("class", "bar")
-       .attr("x", function(d) {
-           return x(d.rank);
-       })
-       .attr("width", x.rangeBand())
-       .attr("y", function(d) {
-           return y(d.participant);
-        })
-       .attr("height", function(d) {
-           return height - y(d.participant);
-       }).attr("fill", function(d) {
-           var r = 140;
-           var g = Math.ceil((d.participant / maxDataHeight) * 255);
-           var b = 10;
-           return "rgb(" + r + ", " + g + ", " + b + ")";
-       });
-}
-
-</script>
-
+    <script type="text/javascript" src="../js/statistics.js"></script>
 </body>
 </html>
