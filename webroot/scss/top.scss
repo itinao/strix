@@ -1,0 +1,62 @@
+/**
+ * top.scss
+ */
+@import 'base';
+
+header {
+    background-color: rgba(140, 200, 10, 1);
+    color: rgba(255, 255, 255, 1);
+    width: 100%;
+    height: 400px;
+    div.page-logo {
+        padding-top: 120px;
+        div {
+            width: 100px;
+            height: 100px;
+            font-size: 6.5em;
+            color: #8cc80a;
+            text-shadow: rgba(140, 200, 10, 0.5) -20px -20px;
+            background-color: #fff;
+            border-radius: 50px;
+            line-height: 120px;
+            text-align: center;
+            margin: 0 auto;
+        }
+    }
+    div.page-title {
+        position: absolute;
+        top: 240px;
+        width: 100%;
+        font-weight: bold;
+        font-size: 3.0em;
+        text-align: center;
+    }
+}
+
+footer {
+    height: 30px;
+    width: 100%;
+    background-color: #DFDFDF;
+    line-height: 30px;
+}
+
+.contents {
+    margin: 30px 0;
+    .page-sub-title {
+        margin: 20px 0;
+    }
+    .page-description {
+        margin: 20px 0;
+    }
+    .page-sub-description {
+        display: flex;
+        margin: 60px 0;
+        > div {
+            background-color: #DFDFDF;
+            height: 300px;
+            margin: 0 2.5%;
+            width: 30%;
+        }
+    }
+}
+

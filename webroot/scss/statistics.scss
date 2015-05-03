@@ -1,0 +1,98 @@
+/**
+ * statistics.scss
+ */
+@import 'base';
+
+.contents {
+    text-align: left;
+    margin: 20px 40px;
+    .contents-title {
+        font-size: 2.2em;
+        color: rgba(140, 200, 10, 1);
+    }
+   .analytics {
+        margin: 30px 0;
+        > dl {
+            display: flex;
+            line-height: 38px;
+            border: 1px solid rgba(255, 255, 255, 1);
+            > dt {
+                width: 200px;
+                background-color: rgba(140, 200, 10, 1);
+                color: rgba(255, 255, 255, 1);
+                text-align: center;
+            }
+            > dd {
+                padding-left: 20px;
+            }
+        }
+    }
+    .profile {
+        display: flex;
+        width: 100%;
+        margin: 30px 0;
+        height: 240px;
+        .text {
+            width: 70%;
+            padding: 0 15px;
+        }
+        .image {
+            width: 30%;
+            padding: 0 15px;
+            img {
+                width: 100%;
+            }
+        }
+    }
+    .graph {
+        margin: 30px 0;
+        .select {
+            display: flex;
+            > div {
+                width: 110px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                background-color: #DFDFDF;
+                border: 1px solid rgba(255, 255, 255, 1);
+                &:hover {
+                    background-color: #F0F0F0;
+                    cursor: pointer;
+                }
+            }
+        }
+        .draw_area {
+            margin: 30px 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.5em;
+            .axis {
+                stroke: #797979;
+                path, line {
+                    fill: none;
+                    shape-rendering: crispEdges;
+                }
+            }
+        }
+    }
+    .history {
+        margin: 30px 10px;
+        ul {
+          > li {
+              position: relative;
+              line-height: 2.2em;
+              padding-left: 20px;
+              border-top: 2px solid #F0F0F0;
+              > a {
+                  position: absolute;
+                  top: 3px;
+                  right: 40px;
+              }
+          }
+          > li:last-child {
+              border-bottom: 2px solid #F0F0F0;
+          }
+        }
+    }
+}
+

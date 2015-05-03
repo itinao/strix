@@ -1,0 +1,22 @@
+/**
+ * settings.scss
+ */
+@import 'base';
+
+.contents {
+    text-align: left;
+    margin: 20px 40px;
+    .contents-title {
+        font-size: 2.2em;
+        color: rgba(140, 200, 10, 1);
+    }
+    .comming-soon {
+        font-size: 2em;
+    }
+    .comming-soon-logo {
+        margin: 0 auto;
+        width: 500px;
+        height: 500px;
+    }
+}
+
