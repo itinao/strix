@@ -17,12 +17,13 @@ var createHar = function(site_id, url, callback) {
     var _cmd = cmd + " " + url;
     console.log(_cmd);
   
-    var child = exec(_cmd, function(err, stdout, stderr) {
+    var child = exec(_cmd, {maxBuffer: 1024 * 500}, function(err, stdout, stderr) {
         if (!err && stdout && !stderr) {
             try {
-                var harStr = stdout.match(/^\{[\s\S]*\}/);// 行末に意図しないコードが入ってもパースできるようにする
+                //var harStr = stdout.match(/^\{[\s\S]*\}/);// 行末に意図しないコードが入ってもパースできるようにする
+                var harStr = stdout.match(/\{[\s\S]*\}/);// 行頭・行末に意図しないコードが入ってもパースできるようにする
                 var har = JSON.parse(harStr);
-  
+
                 // HAR
                 var query = connection.query('insert into har_data (site_id, har, created) values (?, ?, now())',
                                               [site_id, JSON.stringify(har)], function (err, results) {

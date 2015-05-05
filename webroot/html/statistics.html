@@ -18,7 +18,6 @@
     <article class="navigate">
         <a href="../top.html">Home</a>
         <a href="../site.html">Site</a>
-        <a href="../statistics.html">Statistics</a>
         <a href="../settings.html">Settings</a>
     </article>
     <article class="contents">
@@ -44,7 +43,7 @@
                 {{ profile.description }}
             </div>
             <div class="image">
-                <img v-attr="src: profile.screenshot">
+                <img v-attr="src: profile.image_base64">
             </div>
         </div>
 
@@ -64,7 +63,7 @@
         <div class="history">
             <ul>
                 <li v-repeat="historys">
-                    {{ date }}
+                    {{ created }}
                     <div class="small-button" v-on="click: detailButton(id, $event)">Detail</div>
                 </li>
             </ul>

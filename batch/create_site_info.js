@@ -19,6 +19,7 @@ var main = function() {
             process.exit();
         }
         var url = results[0].url;
+        console.log(url);
 
         // 画像保存とサイトの説明文を取得
         phantom.create(function(ph) {
@@ -54,6 +55,9 @@ var main = function() {
                         page.open(url, function(status) {
                             console.log(status);
                             page.renderBase64('PNG', function(b64){
+                                console.log(site_id);
+                                console.log(title);
+                                console.log(description);
                                 var query = con.query('replace into site_info (site_id, title, description, image_base64, updated) values (?, ?, ?, ?, now())',
                                                               [site_id, title, description, 'data:image/png;base64,' + b64], function(err, results) {
                                     console.log(err);
