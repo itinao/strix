@@ -62,6 +62,28 @@ app.get('/getTodayTimes', function(req, res) {
     });
 });
 
+app.get('/getYesterdayTimes', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    var con = getConnection();
+    var param = req.query;
+    var query = con.query('select id, site_id, har, created, date_format(created, "%H") as hour from har_data where site_id = ? and date(created) = DATE_SUB(CURRENT_DATE(), interval 1 day)', [param.site_id], function (err, results) {
+        var onloadTimes = [];
+        for (var i = 0, l = results.length; i < l; i++) {
+            var hour = Number(results[i].hour);
+            var har = JSON.parse(results[i].har);
+            var onloadTime = har.log.pages[0].pageTimings.onLoad;
+            onloadTimes[hour] = {"hour": hour, "onloadTime": onloadTime};
+        }
+        var _res = [];
+        for (var i = 0, l = 24; i < l; i++) {
+            _res[i] = onloadTimes[i] || {"hour": i, "onloadTime": 0};
+        }
+        res.send(_res);
+        con.destroy();
+    });
+});
+
 app.get('/getNewHar', function(req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -94,4 +116,4 @@ var getConnection = function() {
     });
 };
 
-app.listen(3000);
+app.listen(3001);

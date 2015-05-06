@@ -2,13 +2,12 @@
  * harを取得してDBに突っ込む + harをyslowに投げて結果をDBに突っ込む
  */
 var exec = require('child_process').exec;
-var cmd = "phantomjs " + __dirname + "/lib/netsniff.js";
-//var cmd = "/usr/local/bin/phantomjs " + __dirname + "/lib/netsniff.js";
+var cmd = __dirname + "/node_modules/.bin/phantomjs " + __dirname + "/lib/netsniff.js";
 var mysql = require('mysql');
 var async = require('async');
 var YSLOW = require('yslow').YSLOW;
 var doc = require('jsdom').jsdom();
-var db = require('./db.js');
+var db = require(__dirname + '/db.js');
 
 var tasks = [];
 
@@ -17,7 +16,8 @@ var createHar = function(site_id, url, callback) {
     var _cmd = cmd + " " + url;
     console.log(_cmd);
   
-    var child = exec(_cmd, {maxBuffer: 1024 * 500}, function(err, stdout, stderr) {
+    var child = exec(_cmd, {maxBuffer: 1024 * 1024}, function(err, stdout, stderr) {
+        console.log(err);
         if (!err && stdout && !stderr) {
             try {
                 //var harStr = stdout.match(/^\{[\s\S]*\}/);// 行末に意図しないコードが入ってもパースできるようにする
@@ -52,7 +52,7 @@ var createHar = function(site_id, url, callback) {
                 console.log(e);
                 callback && callback();
             }
-        } else if (stdout) {
+        } else if (stderr) {
             console.log('stderr: ' + stderr)
             callback && callback();
         } else {

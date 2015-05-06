@@ -1,8 +1,5 @@
-var api_url = "http://localhost:3000/";
-var har_url = "harviewer/index.php?path=http://localhost:3000/getHarp/%%SITE_ID%%";
 var graph_width = 920;
 var graph_height = 400;
-
 
 var statistics = new Vue({
     el: '#statistics',
@@ -25,10 +22,26 @@ var statistics = new Vue({
     methods: {
         graphButton: function(type, event) {
             console.log(type);
+            var vars = getVars();
+            var site_id = vars.site_id;
+            var targetElm = document.querySelector(".draw_area");
+            if (type === "YESTERDAY")  {
+                request.get("getYesterdayTimes", {site_id: site_id}, function(times) {
+                    console.log(times);
+                    targetElm.childNodes[0].remove();// TODO: 一旦消すよ
+                    drawGraph(targetElm, graph_width, graph_height, times);
+                }.bind(this));
+            } else if (type === "TODAY") {
+                request.get("getTodayTimes", {site_id: site_id}, function(times) {
+                    console.log(times);
+                    targetElm.childNodes[0].remove();// TODO: 一旦消すよ
+                    drawGraph(targetElm, graph_width, graph_height, times);
+                }.bind(this));
+            }
         },
         detailButton: function(site_id, event) {
             console.log(site_id);
-            this.$data.har_url = har_url.replace('%%SITE_ID%%', site_id);
+            this.$data.har_url = Constant.har_url.replace('%%SITE_ID%%', site_id);
             this.$data.detail_dialog.classList.add("on");
             this.$data.loading.classList.add("on");
             // 背景の色をかえる
@@ -54,7 +67,6 @@ var statistics = new Vue({
 
         var vars = getVars();
         var site_id = vars.site_id;
-        request.setBaseURL(api_url);
 
         //
         if (site_id) {
