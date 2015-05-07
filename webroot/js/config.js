@@ -3,7 +3,9 @@
  */
 var Constant = {
     api_url: "http://strix-api.itinao.net/",
-    har_url: "harviewer/index.php?path=http://strix-api.itinao.net/getHarp/%%SITE_ID%%"
+    har_url: "harviewer/index.php?path=http://strix-api.itinao.net/getHarp/%%HAR_DATA_ID%%"
+//    api_url: "http://localhost:3001/",
+//    har_url: "harviewer/index.php?path=http://localhost:3001/getHarp/%%HAR_DATA_ID%%"
 };
 
 //

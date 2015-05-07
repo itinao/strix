@@ -48,6 +48,26 @@
             </div>
         </div>
 
+        <div class="scores">
+            <h2 class="contents-title">LATEST SCORES</h2>
+            <dl>
+                <dt>スコア</dt>
+                <dd>{{ historys[0].yslow.o }}点</dd>
+            </dl>
+            <dl>
+                <dt>ページサイズ</dt>
+                <dd>{{ historys[0].yslow.w }}(byte)</dd>
+            </dl>
+            <dl>
+                <dt>リクエスト回数</dt>
+                <dd>{{ historys[0].yslow.r }}回</dd>
+            </dl>
+            <dl>
+                <dt>ページロード時間</dt>
+                <dd>{{ historys[0].yslow.lt }}(ms)</dd>
+            </dl>
+        </div>
+
         <h2 class="contents-title">GRAPH</h2>
         <div class="graph">
             <div class="select">
@@ -65,11 +85,74 @@
             <ul>
                 <li v-repeat="historys">
                     {{ created }}
-                    <div class="small-button" v-on="click: detailButton(id, $event)">Detail</div>
+                    <div class="small-button score" v-on="click: scoreButton($index, $event)">Score</div>
+                    <div class="small-button detail" v-on="click: detailButton(id, $event)">Detail</div>
                 </li>
             </ul>
         </div>
     </article>
+
+    <div id="score-dialog" class="score-dialog" v-on="click: dialogClick($event)">
+        <div>
+            <h2>総評</h2>
+            <dl>
+                <dt>スコア</dt>
+                <dd>{{ score.yslow.o }}点</dd>
+            </dl>
+            <dl>
+                <dt>ページサイズ</dt>
+                <dd>{{ score.yslow.w }}(byte)</dd>
+            </dl>
+            <dl>
+                <dt>リクエスト回数</dt>
+                <dd>{{ score.yslow.r }}回</dd>
+            </dl>
+            <dl>
+                <dt>ページロード時間</dt>
+                <dd>{{ score.yslow.lt }}(ms)</dd>
+            </dl>
+            <dl>
+                <dt>HTTP通信の回数を減らそう</dt>
+                <dd>{{ score.yslow.g.ynumreq.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>CDN網を使ってネットワーク時間を減らそう</dt>
+                <dd>{{ score.yslow.g.ycdn.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>Expires HeadersというHTTPヘッダを付与して静的ファイルをキャッシュしよう</dt>
+                <dd>{{ score.yslow.g.yexpires.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>GZIP圧縮を行い転送速度を減らそう</dt>
+                <dd>{{ score.yslow.g.ycompress.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>CSSはHTMLのheadタグ内に記述しよう</dt>
+                <dd>{{ score.yslow.g.ycsstop.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>JavaScriptのロードはページの下部分に記述しよう</dt>
+                <dd>{{ score.yslow.g.yjsbottom.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>DNS Loopupの回数を減らしましょう</dt>
+                <dd>{{ score.yslow.g.ydns.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>リダイレクト処理はやめよう</dt>
+                <dd>{{ score.yslow.g.yredirects.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>重複する内容のJSやCSSは削除しよう</dt>
+                <dd>{{ score.yslow.g.ydupes.score }}点</dd>
+            </dl>
+            <dl>
+                <dt>ETagというHTTPヘッダは適切に設定しよう</dt>
+                <dd>{{ score.yslow.g.yetags.score }}点</dd>
+            </dl>
+        </div>
+    </div>
 
     <div id="detail-dialog" class="detail-dialog" v-on="click: dialogClick($event)">
         <iframe sandbox="allow-same-origin allow-scripts" v-attr="src: har_url"></iframe>

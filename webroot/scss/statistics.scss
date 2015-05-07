@@ -44,6 +44,23 @@
             }
         }
     }
+    .scores {
+        margin: 30px 0;
+        > dl {
+            display: flex;
+            line-height: 38px;
+            border: 1px solid rgba(255, 255, 255, 1);
+            > dt {
+                width: 200px;
+                background-color: rgba(140, 200, 10, 1);
+                color: rgba(255, 255, 255, 1);
+                text-align: center;
+            }
+            > dd {
+                padding-left: 20px;
+            }
+        }
+    }
     .graph {
         margin: 30px 0;
         .select {
@@ -78,20 +95,25 @@
     .history {
         margin: 30px 10px;
         ul {
-          > li {
-              position: relative;
-              line-height: 2.2em;
-              padding-left: 20px;
-              border-top: 2px solid #F0F0F0;
-              > div {
-                  position: absolute;
-                  top: 3px;
-                  right: 40px;
-              }
-          }
-          > li:last-child {
-              border-bottom: 2px solid #F0F0F0;
-          }
+            > li {
+                position: relative;
+                line-height: 2.2em;
+                padding-left: 20px;
+                border-top: 2px solid #F0F0F0;
+                > div {
+                    position: absolute;
+                    top: 3px;
+                    &.detail {
+                        right: 40px;
+                    }
+                    &.score {
+                        right: 170px;
+                    }
+                }
+            }
+            > li:last-child {
+                border-bottom: 2px solid #F0F0F0;
+            }
         }
     }
 }
@@ -111,5 +133,45 @@
         width: 90%;
         height: 520px;
         border: none;
+    }
+}
+
+.score-dialog {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: rgba(230, 230, 230, 0.60);
+    &.on {
+        display: block;
+    }
+    > div {
+        width: 600px;
+        height: 520px;
+        border: none;
+        margin: 0 auto;
+        background: #fff;
+        overflow: scroll;
+        box-shadow: 5px 5px #6C6C6C;
+        border-radius: 5px;
+        > h2 {
+            padding: 20px;
+        }
+        > dl {
+            display: flex;
+            line-height: 28px;
+            border: 1px solid rgba(255, 255, 255, 1);
+            > dt {
+                width: 400px;
+                background-color: rgba(140, 200, 10, 1);
+                color: rgba(255, 255, 255, 1);
+                text-align: center;
+            }
+            > dd {
+                width: 198px;
+            }
+        }
     }
 }

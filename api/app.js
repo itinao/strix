@@ -95,6 +95,20 @@ app.get('/getNewHar', function(req, res) {
     });
 });
 
+app.get('/getHistorys', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    var con = getConnection();
+    var param = req.query;
+    var query = con.query('select har_data.id, har_data.site_id, har_data.har, yslow_data.yslow, date_format(yslow_data.created, "%Y-%m-%d %H:%i:%s") as created from har_data left join yslow_data on har_data.id = yslow_data.har_data_id where har_data.site_id = ? order by har_data.id desc limit 10', [param.site_id], function (err, results) {
+        for (var i = 0, l = results.length; i < l; i++) {
+            results[i].yslow = JSON.parse(results[i].yslow);
+        }
+        res.send(results);
+        con.destroy();
+    });
+});
+
 app.get('/getHarp/*', function(req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");

@@ -15,8 +15,10 @@ var statistics = new Vue({
             image_base64: null
         },
         historys: [],
+        score: null,
         har_url: null,
         detail_dialog: null,
+        score_dialog: null,
         loading: null
     },
     methods: {
@@ -39,9 +41,9 @@ var statistics = new Vue({
                 }.bind(this));
             }
         },
-        detailButton: function(site_id, event) {
-            console.log(site_id);
-            this.$data.har_url = Constant.har_url.replace('%%SITE_ID%%', site_id);
+        detailButton: function(har_data_id, event) {
+            console.log(har_data_id);
+            this.$data.har_url = Constant.har_url.replace('%%HAR_DATA_ID%%', har_data_id);
             this.$data.detail_dialog.classList.add("on");
             this.$data.loading.classList.add("on");
             // 背景の色をかえる
@@ -58,9 +60,25 @@ var statistics = new Vue({
             }).bind(this);
             this.$data.loading.style.marginTop = (scroll_top + 20) + "px";
         },
+        scoreButton: function(index, event) {
+            var history = this.$data.historys[index];
+            this.$data.score = history;
+            this.$data.score_dialog.classList.add("on");
+            // 背景の色をかえる
+            var scroll_height = document.body.scrollHeight;
+            if (this.$data.score_dialog.style.height < scroll_height) {// グレーアウト部分の高さを調整
+                this.$data.score_dialog.style.height = scroll_height + "px";
+            }
+            // ダイアログの位置を調整する
+            var score_div = this.$data.score_dialog.querySelector("div");
+            var scroll_top = document.body.scrollTop || document.documentElement.scrollTop;
+            score_div.style.marginTop = (scroll_top + 20) + "px";
+        },
         dialogClick: function(event) {
             this.$data.detail_dialog.classList.remove("on");
+            this.$data.score_dialog.classList.remove("on");
             this.$data.har_url = null;
+            this.$data.score = null;
         }
     },
     ready: function() {
@@ -89,7 +107,7 @@ var statistics = new Vue({
                 drawGraph(targetElm, graph_width, graph_height, today_times);
             }.bind(this));
 
-            request.get("getNewHar", {site_id: site_id}, function(hars) {
+            request.get("getHistorys", {site_id: site_id}, function(hars) {
                 console.log(hars);
                 this.$data.historys = hars;
                 if (hars[0]) {
@@ -100,6 +118,7 @@ var statistics = new Vue({
 
         // 
         this.$data.detail_dialog = this.$el.querySelector(".detail-dialog");
+        this.$data.score_dialog = this.$el.querySelector(".score-dialog");
         // 
         this.$data.loading = this.$el.querySelector("#loading");
     }
