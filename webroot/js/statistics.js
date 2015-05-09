@@ -1,4 +1,4 @@
-var graph_width = 920;
+var graph_width = 800;
 var graph_height = 400;
 
 var statistics = new Vue({
@@ -93,7 +93,6 @@ var statistics = new Vue({
 
         //
         if (site_id) {
-
             this.$data.loading.classList.add("on")
             var task = new Task(4, function(err) {
                 this.$data.loading.classList.remove("on")

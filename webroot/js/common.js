@@ -94,3 +94,26 @@ function getVars() {
     }
     return vars;
 }
+
+function scoreToRank(score) {
+    if (90 <= score) {
+        return 'A';
+    } else if (80 <= score) {
+        return 'B';
+    } else if (70 <= score) {
+        return 'C';
+    } else if (60 <= score) {
+        return 'D';
+    } else if (50 <= score) {
+        return 'E';
+    } else {
+        return 'F';
+    }
+}
+
+function adjustBgHeight(elm) {
+    var scroll_height = document.body.scrollHeight;
+    if (elm.style.height < scroll_height) {
+        elm.style.height = scroll_height + "px";
+    }
+}

@@ -29,6 +29,7 @@ h1, h2, h3, h4, p {
 }
 
 a {
+    color: rgba(140, 200, 10, 1);
     text-decoration: none;
 }
 
@@ -83,9 +84,9 @@ header.common-page {
     text-align: left;
     color: rgba(140, 200, 10, 1);
     div.page-logo {
-        width: 40px;
-        height: 40px;
-        font-size: 2.3em;
+        width: 32px;
+        height: 32px;
+        font-size: 1.8em;
         border-radius: 24px;
         border: 4px solid rgba(140, 200, 10, 1);
         text-shadow: rgba(140, 200, 10, 0.8) -10px -10px;
@@ -94,20 +95,23 @@ header.common-page {
     div.page-title {
         margin-left: 10px;
         font-weight: bold;
-        font-size: 2.0em;
+        font-size: 1.6em;
     }
 }
 
 .navigate {
     width: 100%;
-    height: 52px;
-    line-height: 52px;
-    font-size: 1.3em;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
     background-color: #DFDFDF;
     a {
         display: inline-block;
         width: 160px;
         color: #797979;
+        &.on {
+            background-color: #FAFAFA;
+        }
     }
     a:hover {
         background-color: #F0F0F0;
@@ -127,6 +131,7 @@ header.common-page {
     &.on {
         display: flex;
         display: -webkit-flex;
+        background: rgba(230,230,230,.6);
     }
     .spinner {
         -webkit-animation: rotator 1.4s linear infinite;

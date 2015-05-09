@@ -28,26 +28,25 @@
 
         <div class="analytics">
             <dl>
+                <dt>URL</dt>
+                <dd><a href="{{ info.url }}" target="_blank">{{ info.url }}</a></dd>
+            </dl>
+            <dl>
                 <dt>サイト名</dt>
                 <dd>{{ info.site_name }}</dd>
             </dl>
             <dl>
-                <dt>URL</dt>
-                <dd>{{ info.url }}</dd>
+                <dt>サイト説明<br>meta:description</dt>
+                <dd class="desc">{{ profile.description }}</dd>
+            </dl>
+            <dl>
+                <dt>キャプチャ</dt>
+                <dd><img v-attr="src: profile.image_base64"></dd>
             </dl>
             <dl>
                 <dt>計測期間</dt>
                 <dd>{{ info.start_date }} ~ {{ info.end_date }}</dd>
             </dl>
-        </div>
-
-        <div class="profile">
-            <div class="text">
-                {{ profile.description }}
-            </div>
-            <div class="image">
-                <img v-attr="src: profile.image_base64">
-            </div>
         </div>
 
         <div class="scores">
@@ -122,7 +121,7 @@
                 <dd>{{ score.yslow.g.ycdn.score }}点</dd>
             </dl>
             <dl>
-                <dt>Expires HeadersというHTTPヘッダを付与して静的ファイルをキャッシュしよう</dt>
+                <dt>静的ファイルをキャッシュしよう(Expires Headers)</dt>
                 <dd>{{ score.yslow.g.yexpires.score }}点</dd>
             </dl>
             <dl>

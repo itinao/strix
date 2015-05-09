@@ -7,20 +7,20 @@
     text-align: left;
     margin: 20px 40px;
     .contents-title {
-        font-size: 2.2em;
+        font-size: 1.8em;
         color: rgba(140, 200, 10, 1);
     }
     .contents-list {
-        margin: 30px 10px;
+        margin: 20px 10px;
         font-size: 1.4em;
         > li {
             position: relative;
-            line-height: 2.2em;
+            line-height: 2.0em;
             padding-left: 20px;
             border-top: 2px solid #F0F0F0;
             > a {
                 position: absolute;
-                top: 10px;
+                top: 8px;
                 right: 40px;
             }
         }
