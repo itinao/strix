@@ -24,7 +24,7 @@ body {
     color: #797979;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, p {
     margin: 0;
 }
 
@@ -54,6 +54,9 @@ dl, dt, dd {
     font-size: 2em;
     margin: 0 auto;
     cursor: pointer;
+    &:hover {
+        background-color: rgba(216, 255, 217, 1);
+    }
 }
 
 .small-button {
@@ -67,10 +70,14 @@ dl, dt, dd {
     font-size: 0.7em;
     text-align: center;
     cursor: pointer;
+    &:hover {
+        background-color: rgba(216, 255, 217, 1);
+    }
 }
 
 header.common-page {
     display: flex;
+    display: -webkit-flex;
     width: 98%;
     padding: 1%;
     text-align: left;
@@ -117,6 +124,7 @@ header.common-page {
     justify-content: center;
     &.on {
         display: flex;
+        display: -webkit-flex;
     }
     .spinner {
         -webkit-animation: rotator 1.4s linear infinite;
