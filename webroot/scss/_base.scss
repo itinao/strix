@@ -121,7 +121,9 @@ header.common-page {
     height: 100%;
     display: none;
     align-items: center;
+    -webkit-align-items: center;
     justify-content: center;
+    -webkit-justify-content: center;
     &.on {
         display: flex;
         display: -webkit-flex;
