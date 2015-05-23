@@ -15,7 +15,7 @@ html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
+//    height: 100%;
 }
 
 body {
@@ -56,7 +56,8 @@ dl, dt, dd {
     margin: 0 auto;
     cursor: pointer;
     &:hover {
-        background-color: rgba(216, 255, 217, 1);
+        border-color: rgba(239, 255, 0, 1);
+        color: rgba(239, 255, 0, 1);
     }
 }
 
@@ -72,7 +73,8 @@ dl, dt, dd {
     text-align: center;
     cursor: pointer;
     &:hover {
-        background-color: rgba(216, 255, 217, 1);
+        border-color: rgba(239, 255, 0, 1);
+        color: rgba(239, 255, 0, 1);
     }
 }
 
@@ -131,7 +133,6 @@ header.common-page {
     &.on {
         display: flex;
         display: -webkit-flex;
-        background: rgba(230,230,230,.6);
     }
     .spinner {
         -webkit-animation: rotator 1.4s linear infinite;
@@ -164,4 +165,10 @@ header.common-page {
         stroke-dashoffset: 187;
         transform:rotate(450deg);
     }
+}
+
+.crumb {
+    margin-left: 30px;
+    text-align: left;
+    color: #8cc80a;
 }

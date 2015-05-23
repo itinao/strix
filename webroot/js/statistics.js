@@ -1,5 +1,15 @@
 var graph_width = 800;
 var graph_height = 400;
+var graph_types = {
+    TODAY    : 'TODAY',
+    YESTERDAY: 'YESTERDAY',
+    WEEK     : 'WEEK',
+    MONTH    : 'MONTH',
+    YEAR     : 'YEAR',
+};
+var default_graph_type = graph_types['TODAY'];
+
+
 
 var statistics = new Vue({
     el: '#statistics',
@@ -14,6 +24,7 @@ var statistics = new Vue({
             description: null,
             image_base64: null
         },
+        graph_data: {},
         historys: [],
         score: null,
         har_url: null,
@@ -35,6 +46,24 @@ var statistics = new Vue({
                 }.bind(this));
             } else if (type === "TODAY") {
                 request.get("getTodayTimes", {site_id: site_id}, function(times) {
+                    console.log(times);
+                    targetElm.childNodes[0].remove();// TODO: 一旦消すよ
+                    drawGraph(targetElm, graph_width, graph_height, times);
+                }.bind(this));
+            } else if (type === "WEEK") {
+                request.get("getWeekTimes", {site_id: site_id}, function(times) {
+                    console.log(times);
+                    targetElm.childNodes[0].remove();// TODO: 一旦消すよ
+                    drawGraph(targetElm, graph_width, graph_height, times);
+                }.bind(this));
+            } else if (type === "MONTH") {
+                request.get("getMonth", {site_id: site_id}, function(times) {
+                    console.log(times);
+                    targetElm.childNodes[0].remove();// TODO: 一旦消すよ
+                    drawGraph(targetElm, graph_width, graph_height, times);
+                }.bind(this));
+            } else if (type === "YEAR") {
+                request.get("getYear", {site_id: site_id}, function(times) {
                     console.log(times);
                     targetElm.childNodes[0].remove();// TODO: 一旦消すよ
                     drawGraph(targetElm, graph_width, graph_height, times);
@@ -93,9 +122,9 @@ var statistics = new Vue({
 
         //
         if (site_id) {
-            this.$data.loading.classList.add("on")
+            this.$data.loading.classList.add("on");
             var task = new Task(4, function(err) {
-                this.$data.loading.classList.remove("on")
+                this.$data.loading.classList.remove("on");
             }.bind(this));
 
             request.get("getSite", {site_id: site_id}, function(site) {
@@ -114,9 +143,9 @@ var statistics = new Vue({
             }.bind(this));
 
             var targetElm = document.querySelector(".draw_area");
-            request.get("getTodayTimes", {site_id: site_id}, function(today_times) {
-                console.log(today_times);
-                drawGraph(targetElm, graph_width, graph_height, today_times);
+            request.get("getTodayTimes", {site_id: site_id}, function(times) {
+                console.log(times);
+                drawGraph(targetElm, graph_width, graph_height, times);
                 task.pass();
             }.bind(this));
 

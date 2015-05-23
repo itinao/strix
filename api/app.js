@@ -35,7 +35,11 @@ app.get('/getSiteInfo', function(req, res) {
     var con = getConnection();
     var param = req.query;
     var query = con.query('select site_id, title, description, image_base64, updated from site_info where site_id = ?', [param.site_id], function (err, results) {
-        res.send(results[0]);
+        var _res = {};
+        if (results[0]) {
+            _res = results[0];
+        }
+        res.send(_res);
         con.destroy();
     });
 });
@@ -84,6 +88,38 @@ app.get('/getYesterdayTimes', function(req, res) {
     });
 });
 
+app.get('/getWeekTimes', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    var con = getConnection();
+    var param = req.query;
+    var query = con.query('select date(created) as day, har from har_data where site_id = ? and DATE_SUB(CURRENT_DATE(), interval 7 day) < date(created) group by date(created);', [param.site_id], function (err, results) {
+        var onloadTimes = [];
+        for (var i = 0, l = results.length; i < l; i++) {
+            var har = JSON.parse(results[i].har);
+            var onloadTime = har.log.pages[0].pageTimings.onLoad;
+            onloadTimes[i] = {"hour": results[i].day, "onloadTime": onloadTime};
+        }
+        res.send(onloadTimes);
+        con.destroy();
+    });
+});
+
+// TODO: あとで。。
+app.get('/getMonth', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.send([]);
+});
+
+// TODO: あとで。。
+app.get('/getYear', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.send([]);
+});
+
+
 app.get('/getNewHar', function(req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -100,7 +136,7 @@ app.get('/getHistorys', function(req, res) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     var con = getConnection();
     var param = req.query;
-    var query = con.query('select har_data.id, har_data.site_id, har_data.har, yslow_data.yslow, date_format(yslow_data.created, "%Y-%m-%d %H:%i:%s") as created from har_data left join yslow_data on har_data.id = yslow_data.har_data_id where har_data.site_id = ? order by har_data.id desc limit 10', [param.site_id], function (err, results) {
+    var query = con.query('select har_data.id, har_data.site_id, har_data.har, yslow_data.yslow, date_format(yslow_data.created, "%Y-%m-%d %H:%i:%s") as created from har_data left join yslow_data on har_data.id = yslow_data.har_data_id where har_data.site_id = ? order by har_data.id desc limit 20', [param.site_id], function (err, results) {
         for (var i = 0, l = results.length; i < l; i++) {
             results[i].yslow = JSON.parse(results[i].yslow);
         }
