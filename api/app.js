@@ -55,11 +55,11 @@ app.get('/getTodayTimes', function(req, res) {
             var hour = Number(results[i].hour);
             var har = JSON.parse(results[i].har);
             var onloadTime = har.log.pages[0].pageTimings.onLoad;
-            onloadTimes[hour] = {"hour": hour, "onloadTime": onloadTime};
+            onloadTimes[hour] = {"hour": hour + "時", "onloadTime": onloadTime};
         }
         var _res = [];
         for (var i = 0, l = 24; i < l; i++) {
-            _res[i] = onloadTimes[i] || {"hour": i, "onloadTime": 0};
+            _res[i] = onloadTimes[i] || {"hour": i + "時", "onloadTime": 0};
         }
         res.send(_res);
         con.destroy();
@@ -77,11 +77,11 @@ app.get('/getYesterdayTimes', function(req, res) {
             var hour = Number(results[i].hour);
             var har = JSON.parse(results[i].har);
             var onloadTime = har.log.pages[0].pageTimings.onLoad;
-            onloadTimes[hour] = {"hour": hour, "onloadTime": onloadTime};
+            onloadTimes[hour] = {"hour": hour + "時", "onloadTime": onloadTime};
         }
         var _res = [];
         for (var i = 0, l = 24; i < l; i++) {
-            _res[i] = onloadTimes[i] || {"hour": i, "onloadTime": 0};
+            _res[i] = onloadTimes[i] || {"hour": i + "時", "onloadTime": 0};
         }
         res.send(_res);
         con.destroy();
@@ -93,12 +93,14 @@ app.get('/getWeekTimes', function(req, res) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     var con = getConnection();
     var param = req.query;
-    var query = con.query('select date(created) as day, har from har_data where site_id = ? and DATE_SUB(CURRENT_DATE(), interval 7 day) < date(created) group by date(created);', [param.site_id], function (err, results) {
+    var query = con.query('select date(created) as day, har from har_data where site_id = ? and DATE_SUB(CURRENT_DATE(), interval 7 day) < date(created) group by date(created)', [param.site_id], function (err, results) {
         var onloadTimes = [];
         for (var i = 0, l = results.length; i < l; i++) {
             var har = JSON.parse(results[i].har);
             var onloadTime = har.log.pages[0].pageTimings.onLoad;
-            onloadTimes[i] = {"hour": results[i].day, "onloadTime": onloadTime};
+            var _date = results[i].day;
+            var day = _date.getFullYear() + '-' + ('0' + _date.getMonth()).slice(-2) + '-' + _date.getDate();
+            onloadTimes[i] = {"hour": day, "onloadTime": onloadTime};
         }
         res.send(onloadTimes);
         con.destroy();
@@ -136,7 +138,7 @@ app.get('/getHistorys', function(req, res) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     var con = getConnection();
     var param = req.query;
-    var query = con.query('select har_data.id, har_data.site_id, har_data.har, yslow_data.yslow, date_format(yslow_data.created, "%Y-%m-%d %H:%i:%s") as created from har_data left join yslow_data on har_data.id = yslow_data.har_data_id where har_data.site_id = ? order by har_data.id desc limit 20', [param.site_id], function (err, results) {
+    var query = con.query('select har_data.id, har_data.site_id, har_data.har, yslow_data.yslow, date_format(yslow_data.created, "%Y-%m-%d %H:%i:%s") as created from har_data left join yslow_data on har_data.id = yslow_data.har_data_id where har_data.site_id = ? order by har_data.id desc limit 10', [param.site_id], function (err, results) {
         for (var i = 0, l = results.length; i < l; i++) {
             results[i].yslow = JSON.parse(results[i].yslow);
         }

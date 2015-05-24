@@ -38,35 +38,50 @@ var statistics = new Vue({
             var vars = getVars();
             var site_id = vars.site_id;
             var targetElm = document.querySelector(".draw_area");
+            this.$data.loading.classList.add("on");
+
+            for (var i = 0, l = event.target.parentNode.childNodes.length; i < l; i++) {
+                event.target.parentNode.childNodes[i].classList.remove('on');
+            }
+            event.target.classList.add('on');
+
+            var scroll_top = document.body.scrollTop || document.documentElement.scrollTop;
+            this.$data.loading.style.marginTop = (scroll_top + 20) + "px";
+
             if (type === "YESTERDAY")  {
                 request.get("getYesterdayTimes", {site_id: site_id}, function(times) {
                     console.log(times);
                     targetElm.childNodes[0].remove();// TODO: 一旦消すよ
                     drawGraph(targetElm, graph_width, graph_height, times);
+                    this.$data.loading.classList.remove("on");// 読み込み完了でloadingを消す
                 }.bind(this));
             } else if (type === "TODAY") {
                 request.get("getTodayTimes", {site_id: site_id}, function(times) {
                     console.log(times);
                     targetElm.childNodes[0].remove();// TODO: 一旦消すよ
                     drawGraph(targetElm, graph_width, graph_height, times);
+                    this.$data.loading.classList.remove("on");// 読み込み完了でloadingを消す
                 }.bind(this));
             } else if (type === "WEEK") {
                 request.get("getWeekTimes", {site_id: site_id}, function(times) {
                     console.log(times);
                     targetElm.childNodes[0].remove();// TODO: 一旦消すよ
                     drawGraph(targetElm, graph_width, graph_height, times);
+                    this.$data.loading.classList.remove("on");// 読み込み完了でloadingを消す
                 }.bind(this));
             } else if (type === "MONTH") {
                 request.get("getMonth", {site_id: site_id}, function(times) {
                     console.log(times);
                     targetElm.childNodes[0].remove();// TODO: 一旦消すよ
                     drawGraph(targetElm, graph_width, graph_height, times);
+                    this.$data.loading.classList.remove("on");// 読み込み完了でloadingを消す
                 }.bind(this));
             } else if (type === "YEAR") {
                 request.get("getYear", {site_id: site_id}, function(times) {
                     console.log(times);
                     targetElm.childNodes[0].remove();// TODO: 一旦消すよ
                     drawGraph(targetElm, graph_width, graph_height, times);
+                    this.$data.loading.classList.remove("on");// 読み込み完了でloadingを消す
                 }.bind(this));
             }
         },

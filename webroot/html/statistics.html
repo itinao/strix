@@ -75,11 +75,13 @@
         <h2 class="contents-title">GRAPH</h2>
         <div class="graph">
             <div class="select">
-                <div v-on="click: graphButton('TODAY', $event)">TODAY</div>
+                <div class="on" v-on="click: graphButton('TODAY', $event)">TODAY</div>
                 <div v-on="click: graphButton('YESTERDAY', $event)">YESTERDAY</div>
                 <div v-on="click: graphButton('WEEK', $event)">WEEK</div>
+<!--
                 <div v-on="click: graphButton('MONTH', $event)">MONTH</div>
                 <div v-on="click: graphButton('YEAR', $event)">YEAR</div>
+-->
             </div>
             <div class="draw_area"></div>
         </div>
